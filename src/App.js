@@ -1,25 +1,50 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Chat, Channel, ChannelHeader, Window } from 'stream-chat-react';
+import { MessageList, MessageInput, MessageLivestream } from 'stream-chat-react';
+import { MessageInputSmall, Thread } from 'stream-chat-react';
+import { StreamChat } from 'stream-chat';
+
+import 'stream-chat-react/dist/css/index.css';
 
 function App() {
+
+  const chatClient = new StreamChat('zhr2pb4w5ub6');
+
+  const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGV2ZWxvcG1lbnQifQ.wSZkPFCg5nv7iuaeS1LmfrwtoKm0cQpT3mSb8nuYSGM';
+
+  chatClient.setUser(
+    {
+      id: 'development',
+      name: 'Broken limit',
+      image: 'https://getstream.io/random_svg/?id=broken-limit-4&name=Broken+limit'
+    },
+    userToken,
+  );
+
+  const channel = chatClient.channel('livestream', 'spacex', {
+    image: 'https://goo.gl/Zefkbx',
+    name: 'SpaceX launch discussion',
+  });
+
+  let state = channel.watch();
+
+
+  channel.on('message.new', event => {
+    console.log('received a new message', event.message.text);
+    console.log(`Now have ${channel.state.messages.length} stored in local state`);
+  });
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Chat client={chatClient} theme={'livestream dark'}>
+    <Channel channel={channel} Message={MessageLivestream}>
+      <Window hideOnThread>
+        <ChannelHeader live />
+        <MessageList />
+        <MessageInput Input={MessageInputSmall} focus />
+      </Window>
+      <Thread fullWidth />
+    </Channel>
+  </Chat>
   );
 }
 
