@@ -24,6 +24,7 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  image: '',
   error: null,
 };
 
@@ -35,13 +36,23 @@ class SignUpFormClass extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne } = this.state;
+    const { username, email, passwordOne, image } = this.state;
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         this.setState({ ...INITIAL_STATE });
+
+        // Push user variable to MongoDB on feature/aws-lambda-connection
+        var user = this.props.firebase.auth.currentUser
+
+        user.updateProfile({
+          displayName: username,
+          photoURL: image,
+        })
+
         this.props.history.push(ROUTES.SIGN_IN);
+
       })
       .catch(error => {
         this.setState({ error });
@@ -61,6 +72,7 @@ class SignUpFormClass extends Component {
       passwordOne,
       passwordTwo,
       error,
+      image
     } = this.state;
 
     const isInvalid =
@@ -76,7 +88,7 @@ class SignUpFormClass extends Component {
           value={username}
           onChange={this.onChange}
           type="text"
-          placeholder="Full Name"
+          placeholder="Display Name"
           autoComplete="username"
         />
         <input
@@ -103,6 +115,17 @@ class SignUpFormClass extends Component {
           placeholder="Confirm Password"
           autoComplete="new-password"
         />
+
+
+        <input
+          name="image"
+          value={image}
+          onChange={this.onChange}
+          type="url"
+          placeholder="Optional Image"
+        />
+
+
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>

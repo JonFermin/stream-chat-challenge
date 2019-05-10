@@ -5,6 +5,8 @@ import { MessageList, MessageInput, MessageLivestream } from 'stream-chat-react'
 import { MessageInputSmall, Thread } from 'stream-chat-react';
 import { StreamChat } from 'stream-chat';
 
+import SignOut from './SignOut';
+
 import 'stream-chat-react/dist/css/index.css';
 
 function MainChat(){
@@ -37,8 +39,11 @@ function MainChat(){
 
     return(
         <Chat client={chatClient} theme={'livestream dark'}>
+            
             <Channel channel={channel} Message={MessageLivestream}>
             <Window hideOnThread>
+                <SignOut></SignOut>
+
                 <ChannelHeader live />
                 <MessageList />
                 <MessageInput Input={MessageInputSmall} focus />
