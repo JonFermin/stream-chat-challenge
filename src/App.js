@@ -1,51 +1,30 @@
 import React from 'react';
-import { Chat, Channel, ChannelHeader, Window } from 'stream-chat-react';
-import { MessageList, MessageInput, MessageLivestream } from 'stream-chat-react';
-import { MessageInputSmall, Thread } from 'stream-chat-react';
-import { StreamChat } from 'stream-chat';
 
-import 'stream-chat-react/dist/css/index.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-function App() {
-
-  const chatClient = new StreamChat('zhr2pb4w5ub6');
-
-  const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGV2ZWxvcG1lbnQifQ.wSZkPFCg5nv7iuaeS1LmfrwtoKm0cQpT3mSb8nuYSGM';
-
-  chatClient.setUser(
-    {
-      id: 'development',
-      name: 'Broken limit',
-      image: 'https://getstream.io/random_svg/?id=broken-limit-4&name=Broken+limit'
-    },
-    userToken,
-  );
-
-  const channel = chatClient.channel('livestream', 'spacex', {
-    image: 'https://goo.gl/Zefkbx',
-    name: 'SpaceX launch discussion',
-  });
-
-  let state = channel.watch();
+import MainNavigator from './navigation/MainNavigator';
+import Landing from './components/Landing';
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
+import MainChat from './components/MainChat';
 
 
-  channel.on('message.new', event => {
-    console.log('received a new message', event.message.text);
-    console.log(`Now have ${channel.state.messages.length} stored in local state`);
-  });
-  
-  return (
-    <Chat client={chatClient} theme={'livestream dark'}>
-    <Channel channel={channel} Message={MessageLivestream}>
-      <Window hideOnThread>
-        <ChannelHeader live />
-        <MessageList />
-        <MessageInput Input={MessageInputSmall} focus />
-      </Window>
-      <Thread fullWidth />
-    </Channel>
-  </Chat>
-  );
-}
+import * as ROUTES from './constants/routes';
+
+const App = () => (
+  <Router>
+    <div>
+      <MainNavigator />
+
+      <hr />
+
+      <Route exact path={ROUTES.LANDING} component={Landing} />
+      <Route path={ROUTES.SIGN_UP} component={SignUp} />
+      <Route path={ROUTES.SIGN_IN} component={SignIn} />
+      <Route path={ROUTES.HOME} component={MainChat} />
+
+    </div>
+  </Router>
+);
 
 export default App;
