@@ -25,26 +25,30 @@ const createConn = async () => {
     db = client.db(mongoDbName);
 };
 
-const performQuery = async (username, id) => {
+const performQuery = async (body) => {
     const users = db.collection('users');
 
     const user = {
-        uuid: id,
-        name: username,
+        uuid: body.uuid,
+        name: body.user,
         pass: 'n/A',
     };
 
     return {
         insertedUser: user,
         mongoResult: await users.insertOne(user),
-        test: username + id,
+        test: JSON.stringify(body),
     };
 };
 
 const app = express();
-app.use(bodyParser.urlencoded({
-    extended: true
-  }));
+
+// app.use(bodyParser.urlencoded({
+//     extended: true
+// }));
+
+app.use(bodyParser.json())
+
 app.post('/hello', async function (req, res) {
     if (!client.isConnected()) {
         // Cold start or connection timed out. Create new connection.
@@ -60,7 +64,7 @@ app.post('/hello', async function (req, res) {
 
     // Connection ready. Perform insert and return result.
     try {
-        res.json(await performQuery(req.body.user, req.body.uuid));
+        res.json(await performQuery(req.body));
         return;
     } catch (e) {
         res.send({
