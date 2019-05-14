@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { withFirebase } from './firecontext';
+import { withFirebase } from '../controller/firecontext';
 import { withRouter } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 
 import 'stream-chat-react/dist/css/index.css';
+
+import {loginMongo} from '../controller/mongouser'
 
 const SignUpLink = () => (
   <p>
@@ -41,7 +43,9 @@ class SignInFormClass extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        console.log(this.props.firebase.auth.currentUser);
+        let user = this.props.firebase.auth.currentUser;
+        console.log(user);
+        loginMongo(user);
         this.props.history.push(ROUTES.HOME);
       })
       .catch(error => {

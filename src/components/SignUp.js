@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { withFirebase } from './firecontext';
+import { withFirebase } from '../controller/firecontext';
 import { withRouter } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
+
+import {signupMongo} from '../controller/mongouser'
 
 const SignUpLink = () => (
   <p>
@@ -50,7 +52,7 @@ class SignUpFormClass extends Component {
           displayName: username,
           photoURL: image,
         })
-
+        signupMongo(user);
         this.props.history.push(ROUTES.SIGN_IN);
 
       })

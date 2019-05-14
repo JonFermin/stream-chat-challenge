@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { withFirebase } from './firecontext';
+import { withFirebase } from '../controller/firecontext';
 import { withRouter } from 'react-router-dom';
 
 

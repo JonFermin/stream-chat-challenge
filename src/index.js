@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import Firebase from './components/fire';
-import FirebaseContext from './components/firecontext';
+import Firebase from './controller/fire';
+import FirebaseContext from './controller/firecontext';
 
 
 ReactDOM.render(
