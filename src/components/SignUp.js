@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 
-import {signupMongo} from '../controller/mongouser'
+import { signupMongo } from '../controller/mongouser'
 
 const SignUpLink = () => (
   <p>
@@ -47,12 +47,20 @@ class SignUpFormClass extends Component {
 
         // Push user variable to MongoDB on feature/aws-lambda-connection
         var user = this.props.firebase.auth.currentUser
+        console.log(user);
 
         user.updateProfile({
           displayName: username,
           photoURL: image,
         })
-        signupMongo(user);
+
+        var obj = {
+          uid: user.uid,
+          username,
+          image,
+        }
+
+        signupMongo(obj);
         this.props.history.push(ROUTES.SIGN_IN);
 
       })

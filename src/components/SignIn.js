@@ -7,7 +7,7 @@ import * as ROUTES from '../constants/routes';
 
 import 'stream-chat-react/dist/css/index.css';
 
-import {loginMongo} from '../controller/mongouser'
+import {grabUserMongo} from '../controller/mongouser'
 
 const SignUpLink = () => (
   <p>
@@ -45,7 +45,7 @@ class SignInFormClass extends Component {
         this.setState({ ...INITIAL_STATE });
         let user = this.props.firebase.auth.currentUser;
         console.log(user);
-        loginMongo(user);
+        grabUserMongo(user.uid);
         this.props.history.push(ROUTES.HOME);
       })
       .catch(error => {
