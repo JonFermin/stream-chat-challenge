@@ -33,14 +33,12 @@ class MainChat extends Component {
             var user = this.props.location.state;
             chatClient.setUser(
                 {
-                id: user.id,
+                id: "development",
                 name: user.name,
                 image: user.image
                 },
                 userToken,
             );
-            
-            
 
             const channel = chatClient.channel('livestream', 'spacex', {
                 image: 'https://goo.gl/Zefkbx',
