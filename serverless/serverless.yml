@@ -54,11 +54,27 @@ provider:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
+# functions:
+#   hello:
+#     handler: handler.hello
+#     events:
+#       - http: GET hello
+
 functions:
-  hello:
-    handler: handler.hello
+  app:
+    handler: handler.user
     events:
-      - http: POST hello
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+  createUser:
+    handler: handler.user
+    events:
+      - http: 'POST /add-user'
+  getUser:
+    handler: handler.user
+    events:
+      - http: 'GET /get-user/{proxy+}'
+      
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
