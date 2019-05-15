@@ -1,6 +1,7 @@
 export async function signupMongo (userObject) {
     var data = {
-        uuid: userObject.uid,
+        email: userObject.email, 
+        id: userObject.id,
         user: userObject.username,
         image: userObject.image,
     }
@@ -9,7 +10,6 @@ export async function signupMongo (userObject) {
         method: 'post', 
         headers: new Headers({
             "Content-Type": "application/json",
-            
         }),
         body: JSON.stringify(data)
     });

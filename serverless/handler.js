@@ -6,6 +6,9 @@ const MongoClient = require('mongodb').MongoClient;
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+const StreamChat = require('stream-chat').StreamChat;
+const serverSideClient = new StreamChat('zhr2pb4w5ub6', 'n739pdrd5zmmemb88t38b62be6qu99rxdr45tnjjcfycrnss5eh3qxpkdx39ude7');
+
 var whitelist = ['http://localhost:3000']
 var corsOptions = function (req, callback) {
   var corsOptions;
@@ -16,8 +19,6 @@ var corsOptions = function (req, callback) {
   }
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
-
-// mongodb+srv://johndoe:<password>@stream-chat-auth-di9pf.mongodb.net/test?retryWrites=true
 
 const mongoClusterName = 'stream-chat-auth-di9pf';
 const mongoUser = 'admin';
@@ -76,10 +77,12 @@ app.post('/add-user', cors(corsOptions), async function (req, res) {
 
 const insertUser = async (body) => {
     const users = db.collection('users');
-
+    const token = serverSideClient.createToken(body.id);
     const user = {
-        id: body.uuid,
+        userToken: token,
+        id: body.id,
         name: body.user,
+        email: body.email,
         image: body.image,
     };
 
