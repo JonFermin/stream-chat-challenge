@@ -5,7 +5,10 @@ import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 
-import 'stream-chat-react/dist/css/index.css';
+import { FormInput, FormGroup, Form, Button } from "shards-react";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "shards-ui/dist/css/shards.min.css"
 
 import {grabUserMongo} from '../controller/mongouser'
 
@@ -17,7 +20,7 @@ const SignUpLink = () => (
 
 const SignIn = () => (
       <div>
-        <h1>SignIn</h1>
+        <h1>Sign In</h1>
         <SignInForm />
         <SignUpLink />
       </div>
@@ -44,9 +47,13 @@ class SignInFormClass extends Component {
       .then(() => {
         this.setState({ ...INITIAL_STATE });
         let user = this.props.firebase.auth.currentUser;
-        console.log(user);
-        grabUserMongo(user.uid);
-        this.props.history.push(ROUTES.HOME);
+        grabUserMongo(user.uid).then((result) => {
+          this.props.history.push({
+            pathname: ROUTES.HOME,
+            state: result.mongoResult 
+          });
+        });;
+        
       })
       .catch(error => {
         this.setState({ error });
@@ -65,29 +72,37 @@ class SignInFormClass extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-          autoComplete="email"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-          autoComplete="password"
-        />
-        <button disabled={isInvalid} type="submit">
+      <Form onSubmit={this.onSubmit}>
+        <FormGroup>
+          <label htmlFor="#username">Email</label>
+          <FormInput
+            name="email"
+            value={email}
+            onChange={this.onChange}
+            type="text"
+            placeholder="johndoe@gmail.com"
+            autoComplete="email"
+          />
+        </FormGroup>
+        
+        <FormGroup>
+          <label htmlFor="#password">Password</label>
+          <FormInput
+            name="password"
+            value={password}
+            onChange={this.onChange}
+            type="password"
+            placeholder="Password"
+            autoComplete="password"
+          />
+        </FormGroup>
+        
+        <Button disabled={isInvalid} type="submit">
           Sign In
-        </button>
+        </Button>
 
         {error && <p>{error.message}</p>}
-      </form>
+      </Form>
     );
   }
 }

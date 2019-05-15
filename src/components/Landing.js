@@ -4,11 +4,9 @@ import 'stream-chat-react/dist/css/index.css';
 
 const Landing = () => (
 
-      <div>
-          <p> landing </p>
-  
-      </div>
+    <div class="lds-ripple"><div></div><div></div></div>
 
   );
 
 export default Landing;
+

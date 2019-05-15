@@ -7,6 +7,11 @@ import * as ROUTES from '../constants/routes';
 
 import { signupMongo } from '../controller/mongouser'
 
+import { Form, FormInput, Button } from "shards-react";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "shards-ui/dist/css/shards.min.css"
+
 const SignUpLink = () => (
   <p>
     Already have an account? <Link to={ROUTES.SIGN_IN}>Sign In</Link>
@@ -92,8 +97,9 @@ class SignUpFormClass extends Component {
     username === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
+      <Form onSubmit={this.onSubmit}>
+        <label htmlFor="#username">Username</label>
+        <FormInput
           name="username"
           value={username}
           onChange={this.onChange}
@@ -101,7 +107,7 @@ class SignUpFormClass extends Component {
           placeholder="Display Name"
           autoComplete="username"
         />
-        <input
+        <FormInput
           name="email"
           value={email}
           onChange={this.onChange}
@@ -109,7 +115,7 @@ class SignUpFormClass extends Component {
           placeholder="Email Address"
           autoComplete="email"
         />
-        <input
+        <FormInput
           name="passwordOne"
           value={passwordOne}
           onChange={this.onChange}
@@ -117,7 +123,7 @@ class SignUpFormClass extends Component {
           placeholder="Password"
           autoComplete="new-password"
         />
-        <input
+        <FormInput
           name="passwordTwo"
           value={passwordTwo}
           onChange={this.onChange}
@@ -127,7 +133,7 @@ class SignUpFormClass extends Component {
         />
 
 
-        <input
+        <FormInput
           name="image"
           value={image}
           onChange={this.onChange}
@@ -136,12 +142,12 @@ class SignUpFormClass extends Component {
         />
 
 
-        <button disabled={isInvalid} type="submit">
+        <Button disabled={isInvalid} type="submit">
           Sign Up
-        </button>
+        </Button>
 
         {error && <p>{error.message}</p>}
-      </form>
+      </Form>
     );
   }
 }
