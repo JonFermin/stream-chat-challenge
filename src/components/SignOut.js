@@ -5,15 +5,16 @@ import { withRouter } from 'react-router-dom';
 
 
 import * as ROUTES from '../constants/routes';
+import { Button } from "shards-react";
+
 
 
 class SignOut extends Component {
     render () {
         return(
-            <button type="button" onClick={()=> {
+            <Button type="button" onClick={()=> {
                 this.props.firebase.doSignOut()
                 .then(() => {
-                    console.log(this.props.firebase.auth.currentUser);
                     this.props.history.push(ROUTES.SIGN_IN);
                   })
                   .catch(error => {
@@ -22,7 +23,7 @@ class SignOut extends Component {
                 
                 }}>
                 Sign Out
-            </button>
+            </Button>
         ) ;
     }
 }

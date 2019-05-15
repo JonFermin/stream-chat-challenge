@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import 'stream-chat-react/dist/css/index.css';
 
-const Landing = () => (
 
-    <div class="lds-ripple"><div></div><div></div></div>
+import { Redirect } from 'react-router-dom';
+import * as ROUTES from '../constants/routes';
 
-  );
+class Landing extends Component{
+  state = {
+    redirect: false
+  }
+  componentDidMount() {
+    this.id = setTimeout(() => this.setState({ redirect: true }), 3000)
+  }
+  render (){
+      return this.state.redirect
+      ? <Redirect to={ROUTES.SIGN_IN} />
+      : <div className="lds-wrapper"><div className="lds-ripple"><div></div><div></div></div></div>
+
+      
+  }
+} 
 
 export default Landing;
 

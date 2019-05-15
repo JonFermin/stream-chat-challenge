@@ -10,7 +10,10 @@ import { signupMongo } from '../controller/mongouser'
 import { Form, FormInput, Button } from "shards-react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "shards-ui/dist/css/shards.min.css"
+import "shards-ui/dist/css/shards.min.css";
+
+import "../constants/scss/Main.scss";
+
 
 const SignUpLink = () => (
   <p>
@@ -19,7 +22,7 @@ const SignUpLink = () => (
 );
 
 const SignUp = () => (
-  <div>
+  <div className="formContainer">
     <h1>SignUp</h1>
     <SignUpForm />
     <SignUpLink />
@@ -52,15 +55,10 @@ class SignUpFormClass extends Component {
 
         // Push user variable to MongoDB on feature/aws-lambda-connection
         var user = this.props.firebase.auth.currentUser
-        console.log(user);
-
-        user.updateProfile({
-          displayName: username,
-          photoURL: image,
-        })
 
         var obj = {
-          uid: user.uid,
+          email,
+          id: user.uid,
           username,
           image,
         }
@@ -107,6 +105,7 @@ class SignUpFormClass extends Component {
           placeholder="Display Name"
           autoComplete="username"
         />
+        <label htmlFor="#email">Email</label>
         <FormInput
           name="email"
           value={email}
@@ -115,6 +114,7 @@ class SignUpFormClass extends Component {
           placeholder="Email Address"
           autoComplete="email"
         />
+        <label htmlFor="#passwordOne">Password</label>
         <FormInput
           name="passwordOne"
           value={passwordOne}
@@ -123,6 +123,7 @@ class SignUpFormClass extends Component {
           placeholder="Password"
           autoComplete="new-password"
         />
+        <label htmlFor="#passwordTwo">Retype Password</label>
         <FormInput
           name="passwordTwo"
           value={passwordTwo}
@@ -132,6 +133,7 @@ class SignUpFormClass extends Component {
           autoComplete="new-password"
         />
 
+        <label htmlFor="#image">Optional Image URL</label>
 
         <FormInput
           name="image"

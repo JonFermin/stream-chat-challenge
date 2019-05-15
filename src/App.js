@@ -6,6 +6,7 @@ import Landing from './components/Landing';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import MainChat from './components/MainChat';
+import "./constants/scss/Main.scss";
 
 
 import * as ROUTES from './constants/routes';

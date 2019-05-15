@@ -10,6 +10,7 @@ import { FormInput, FormGroup, Form, Button } from "shards-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css"
 
+
 import {grabUserMongo} from '../controller/mongouser'
 
 const SignUpLink = () => (
@@ -19,7 +20,7 @@ const SignUpLink = () => (
 );
 
 const SignIn = () => (
-      <div>
+      <div className="formContainer">
         <h1>Sign In</h1>
         <SignInForm />
         <SignUpLink />
@@ -48,6 +49,7 @@ class SignInFormClass extends Component {
         this.setState({ ...INITIAL_STATE });
         let user = this.props.firebase.auth.currentUser;
         grabUserMongo(user.uid).then((result) => {
+          console.log(result);
           this.props.history.push({
             pathname: ROUTES.HOME,
             state: result.mongoResult 
@@ -72,6 +74,7 @@ class SignInFormClass extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
+      <div className = "formContainer">
       <Form onSubmit={this.onSubmit}>
         <FormGroup>
           <label htmlFor="#username">Email</label>
@@ -103,6 +106,7 @@ class SignInFormClass extends Component {
 
         {error && <p>{error.message}</p>}
       </Form>
+      </div>
     );
   }
 }

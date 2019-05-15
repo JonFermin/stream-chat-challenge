@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-
 import { Chat, Channel, ChannelHeader, Window } from 'stream-chat-react';
 import { MessageList, MessageInput, MessageLivestream } from 'stream-chat-react';
 import { MessageInputSmall, Thread } from 'stream-chat-react';
 import { StreamChat } from 'stream-chat';
-
 import { Link } from 'react-router-dom';
-import * as ROUTES from '../constants/routes';
-
 import { withFirebase } from '../controller/firecontext';
 import { withRouter } from 'react-router-dom';
 
 import SignOut from './SignOut';
-
 import 'stream-chat-react/dist/css/index.css';
+
+import * as ROUTES from '../constants/routes';
+
 
 class MainChat extends Component {
     render(){
@@ -25,19 +23,16 @@ class MainChat extends Component {
                 )
         } else {
             const chatClient = new StreamChat('zhr2pb4w5ub6');
-
-            const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGV2ZWxvcG1lbnQifQ.wSZkPFCg5nv7iuaeS1LmfrwtoKm0cQpT3mSb8nuYSGM';
-
-            console.log(this.props.location.state)
-
             var user = this.props.location.state;
+            console.log(user);
+
             chatClient.setUser(
                 {
-                id: "development",
+                id: user.id,
                 name: user.name,
                 image: user.image
                 },
-                userToken,
+                user.userToken,
             );
 
             const channel = chatClient.channel('livestream', 'spacex', {
