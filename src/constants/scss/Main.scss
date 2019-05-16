@@ -52,24 +52,35 @@ $break-small: 500px;
     overflow:hidden;
 }
 
-.ChannelPreview {
-    margin:12px;
-    .unread {
-        font-size: .7em;
-        font-weight: 600 !important;
-        padding-left: 12px;
-    }
-    a{
-        text-decoration: none;
-    }
+
+.unread {
+    font-size: .7em;
+    font-weight: 600 !important;
+    padding-left: 12px;
 }
+a{
+    text-decoration: none;
+}
+
 .SignOut{
     display: block;
     padding: 12px;
     margin: 0 auto;
 }
 
+.ReactPlayer{
+    width: 400px !important;
+    height: auto !important;
+}
+
 .ListItem{
     background: none;
 }
 
+.str-chat__channel-preview{
+    button:focus, button:active{
+        outline: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}

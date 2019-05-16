@@ -13,29 +13,30 @@ import 'stream-chat-react/dist/css/index.css';
 import * as ROUTES from '../constants/routes';
 import { Button, ListGroup, ListGroupItem } from "shards-react";
 
+import ReactPlayer from 'react-player'
 
-class MyChannelPreview extends Component {
+class MySidebar extends Component {
     render() {
-        const {setActiveChannel, channel, unread} = this.props;
+        console.log(this.props.children)
+        
         return (
-            <div>
-                <div className="ChannelPreview">
-                    <ListGroup>
-                        <a href="#" onClick={(e) => setActiveChannel(channel, e)}>
-                            <ListGroupItem className="ListItem">
-                            {channel.data.name}
-                            <div className="unread">Unread messages: {unread}</div>
-                            </ListGroupItem>
-                        </a>
-                    </ListGroup>
-                    
-                </div>
-                <hr></hr>
-                <SignOut></SignOut>
-            </div>
-      );
+            <React.Fragment>
+                {/* <ReactPlayer className="ReactPlayer" url='https://www.youtube.com/watch?v=ysz5S6PUM-U' playing /> */}
+                <ListGroup>
+                {this.props.children.map(child => (
+                    <ListGroupItem key={child.key} className="ListItem">
+                    <a href="#" onClick={(e) => child.props.setActiveChannel(child.props.channel, e)}>
+                        {child.props.channel.data.name}
+                        <div className="unread"> {child.props.channel.type}</div>
+                    </a>
+                    </ListGroupItem>
+                ))}
+                </ListGroup>
+            </React.Fragment>
+
+        );
     }
-  }
+}
 
 class MainChat extends Component {
 
@@ -77,23 +78,24 @@ class MainChat extends Component {
             const channels = chatClient.queryChannels(filters, sort).then((result) => {
                 console.log(result);
             });
-            console.log(channels);
+            
    
             return(
-                <div className="ChatContainer">
-                    <Chat client={chatClient} theme={'messaging light'}>
-                        <ChannelList channels={channels} Preview={MyChannelPreview} />
-                        <Channel Message={MessageLivestream}>
-                        <Window>
-                            <ChannelHeader />
-                            <MessageList />
-                            <MessageInput />
-                        </Window>
-                        <Thread />
-                        </Channel>
-                    </Chat>
-                </div>
-                              
+                    <div className="ChatContainer">
+                        <Chat client={chatClient} theme={'messaging light'}>
+                            <ChannelList  
+                                Paginator={MySidebar}
+                                  />
+                            <Channel  Message={MessageLivestream}>
+                            <Window>
+                                <ChannelHeader />
+                                <MessageList />
+                                <MessageInput />
+                            </Window>
+                            <Thread/>
+                            </Channel>
+                        </Chat>
+                    </div>         
             );
         }
     }
