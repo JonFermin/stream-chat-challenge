@@ -16,15 +16,25 @@ import { Button, ListGroup, ListGroupItem } from "shards-react";
 import ReactPlayer from 'react-player'
 
 class MySidebar extends Component {
+    link = ""
     render() {
         console.log(this.props.children)
-        
+        this.props.children.map(child => (
+        child.props.channel.state.messages.forEach( (message) => {
+            if (message.text.includes("youtube")){
+                this.link = message.text
+                console.log(this.link)
+            }
+        })
+        ))
         return (
             <React.Fragment>
-                {/* <ReactPlayer className="ReactPlayer" url='https://www.youtube.com/watch?v=ysz5S6PUM-U' playing /> */}
+                <ReactPlayer className="ReactPlayer" url={this.link} playing />
+                
                 <ListGroup>
                 {this.props.children.map(child => (
-                    <ListGroupItem key={child.key} className="ListItem">
+                    
+                    <ListGroupItem key={child.key} className="ListItem">           
                     <a href="#" onClick={(e) => child.props.setActiveChannel(child.props.channel, e)}>
                         {child.props.channel.data.name}
                         <div className="unread"> {child.props.channel.type}</div>
@@ -32,6 +42,8 @@ class MySidebar extends Component {
                     </ListGroupItem>
                 ))}
                 </ListGroup>
+                <hr></hr>
+                <SignOut></SignOut>
             </React.Fragment>
 
         );
