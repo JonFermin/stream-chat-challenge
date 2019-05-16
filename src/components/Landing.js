@@ -11,7 +11,7 @@ class Landing extends Component{
     redirect: false
   }
   componentDidMount() {
-    this.id = setTimeout(() => this.setState({ redirect: true }), 3000)
+    this.id = setTimeout(() => this.setState({ redirect: true }), 0)
   }
   render (){
       return this.state.redirect
