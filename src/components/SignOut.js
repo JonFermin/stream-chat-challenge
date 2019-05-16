@@ -12,7 +12,7 @@ import { Button } from "shards-react";
 class SignOut extends Component {
     render () {
         return(
-            <Button type="button" onClick={()=> {
+            <Button className="SignOut" type="button" onClick={()=> {
                 this.props.firebase.doSignOut()
                 .then(() => {
                     this.props.history.push(ROUTES.SIGN_IN);

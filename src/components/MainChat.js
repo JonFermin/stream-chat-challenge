@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Chat, Channel, ChannelHeader, Window } from 'stream-chat-react';
+import { Chat, Channel, ChannelHeader, Window, ChannelList } from 'stream-chat-react';
 import { MessageList, MessageInput, MessageLivestream } from 'stream-chat-react';
-import { MessageInputSmall, Thread } from 'stream-chat-react';
+import { Thread } from 'stream-chat-react';
 import { StreamChat } from 'stream-chat';
 import { Link } from 'react-router-dom';
 import { withFirebase } from '../controller/firecontext';
@@ -11,19 +11,56 @@ import SignOut from './SignOut';
 import 'stream-chat-react/dist/css/index.css';
 
 import * as ROUTES from '../constants/routes';
+import { Button, ListGroup, ListGroupItem } from "shards-react";
 
+
+class MyChannelPreview extends Component {
+    render() {
+        const {setActiveChannel, channel, unread} = this.props;
+        return (
+            <div>
+                <div className="ChannelPreview">
+                    <ListGroup>
+                        <a href="#" onClick={(e) => setActiveChannel(channel, e)}>
+                            <ListGroupItem className="ListItem">
+                            {channel.data.name}
+                            <div className="unread">Unread messages: {unread}</div>
+                            </ListGroupItem>
+                        </a>
+                    </ListGroup>
+                    
+                </div>
+                <hr></hr>
+                <SignOut></SignOut>
+            </div>
+      );
+    }
+  }
 
 class MainChat extends Component {
+
+    handleOnSubmit = () => {
+        this.props.history.push(`/dashboard`);
+        };
     render(){
-        if (this.props.firebase.auth.currentUser == null){
+        if (this.props.location.state == null){
             return(
-                <p>
-                Please sign in <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-                </p>
+                <div className="formContainer">
+                <h4> Please sign in  </h4>
+                <br></br>
+                <Link to={ROUTES.SIGN_IN}>
+                <Button type="submit">
+                    Sign In
+                </Button>
+                </Link>
+
+                </div>
                 )
         } else {
-            const chatClient = new StreamChat('zhr2pb4w5ub6');
+            
             var user = this.props.location.state;
+            const chatClient = new StreamChat('zhr2pb4w5ub6');
+
             console.log(user);
 
             chatClient.setUser(
@@ -34,36 +71,29 @@ class MainChat extends Component {
                 },
                 user.userToken,
             );
-
-            const channel = chatClient.channel('livestream', 'spacex', {
-                image: 'https://goo.gl/Zefkbx',
-                name: 'SpaceX launch discussion',
+  
+            const filters = {};
+            const sort = { last_message_at: -1 };
+            const channels = chatClient.queryChannels(filters, sort).then((result) => {
+                console.log(result);
             });
-
-            // let state = channel.watch();
-
-
-            channel.on('message.new', event => {
-                console.log('received a new message', event.message.text);
-                console.log(`Now have ${channel.state.messages.length} stored in local state`);
-            });
+            console.log(channels);
+   
             return(
-                <div>
-                    <Chat client={chatClient} theme={'livestream dark'}>
-                        
-                        <Channel channel={channel} Message={MessageLivestream}>
-                        <Window hideOnThread>
-                            <SignOut></SignOut>
-    
-                            <ChannelHeader live />
+                <div className="ChatContainer">
+                    <Chat client={chatClient} theme={'messaging light'}>
+                        <ChannelList channels={channels} Preview={MyChannelPreview} />
+                        <Channel Message={MessageLivestream}>
+                        <Window>
+                            <ChannelHeader />
                             <MessageList />
-                            <MessageInput Input={MessageInputSmall} focus />
+                            <MessageInput />
                         </Window>
-                        <Thread fullWidth />
+                        <Thread />
                         </Channel>
                     </Chat>
                 </div>
-                
+                              
             );
         }
     }

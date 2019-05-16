@@ -48,4 +48,28 @@ $break-small: 500px;
     }
     
 }
+.ChatContainer{
+    overflow:hidden;
+}
+
+.ChannelPreview {
+    margin:12px;
+    .unread {
+        font-size: .7em;
+        font-weight: 600 !important;
+        padding-left: 12px;
+    }
+    a{
+        text-decoration: none;
+    }
+}
+.SignOut{
+    display: block;
+    padding: 12px;
+    margin: 0 auto;
+}
+
+.ListItem{
+    background: none;
+}
 
