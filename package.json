@@ -10,7 +10,7 @@
     "react-dom": "^16.8.6",
     "react-player": "^1.11.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.0",
+    "react-scripts": "2.1.8",
     "react-with-firebase-auth": "^1.0.3",
     "shards-react": "^1.0.3",
     "stream-chat": "^0.13.2",
@@ -36,5 +36,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.13.0"
   }
 }

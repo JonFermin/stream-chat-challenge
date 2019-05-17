@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../controller/firecontext';
-import { withRouter } from 'react-router-dom';
-
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 
 import { FormInput, FormGroup, Form, Button } from "shards-react";
@@ -15,7 +13,8 @@ import {grabUserMongo} from '../controller/mongouser'
 
 const SignUpLink = () => (
   <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+    Don't have an account? 
+    <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
   </p>
 );
 
@@ -33,7 +32,7 @@ const INITIAL_STATE = {
   error: null,
 };
 
-class SignInFormClass extends Component {
+export class SignInFormClass extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
@@ -60,8 +59,9 @@ class SignInFormClass extends Component {
       .catch(error => {
         this.setState({ error });
       });
-
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
   };
 
   onChange = event => {
@@ -70,15 +70,14 @@ class SignInFormClass extends Component {
 
   render() {
     const { email, password, error } = this.state;
-
     const isInvalid = password === '' || email === '';
-
     return (
       <div className = "formContainer">
       <Form onSubmit={this.onSubmit}>
         <FormGroup>
           <label htmlFor="#username">Email</label>
           <FormInput
+            id="email-input"
             name="email"
             value={email}
             onChange={this.onChange}
@@ -91,6 +90,7 @@ class SignInFormClass extends Component {
         <FormGroup>
           <label htmlFor="#password">Password</label>
           <FormInput
+            id="pass-input"
             name="password"
             value={password}
             onChange={this.onChange}
@@ -100,7 +100,7 @@ class SignInFormClass extends Component {
           />
         </FormGroup>
         
-        <Button disabled={isInvalid} type="submit">
+        <Button id="submit-login" disabled={isInvalid} type="submit">
           Sign In
         </Button>
 
@@ -112,5 +112,7 @@ class SignInFormClass extends Component {
 }
 
 const SignInForm = withRouter(withFirebase(SignInFormClass));
+
+
 
 export default SignIn;

@@ -24,7 +24,6 @@ const mongoClusterName = 'stream-chat-auth-di9pf';
 const mongoUser = 'admin';
 const mongoDbName = 'main';
 const mongoPass = 'admin';
-
 const mongoConnStr = `mongodb+srv://${mongoUser}:${mongoPass}@${mongoClusterName}.mongodb.net/${mongoDbName}?retryWrites=true`;
 
 const client = new MongoClient(mongoConnStr, {

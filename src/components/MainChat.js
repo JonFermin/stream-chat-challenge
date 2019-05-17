@@ -5,7 +5,6 @@ import { Thread } from 'stream-chat-react';
 import { StreamChat } from 'stream-chat';
 import { Link } from 'react-router-dom';
 import { withFirebase } from '../controller/firecontext';
-import { withRouter } from 'react-router-dom';
 
 import SignOut from './SignOut';
 import 'stream-chat-react/dist/css/index.css';
@@ -17,25 +16,25 @@ import ReactPlayer from 'react-player'
 
 class MySidebar extends Component {
     link = ""
+    hrefLink = '#'; 
     render() {
-        console.log(this.props.children)
-        this.props.children.map(child => (
-        child.props.channel.state.messages.forEach( (message) => {
-            if (message.text.includes("youtube")){
-                this.link = message.text
-                console.log(this.link)
-            }
-        })
-        ))
+        this.props.children.forEach((child) => {
+            child.props.channel.state.messages.forEach( (message) => {
+                if (message.text.includes("youtube")){
+                    this.link = message.text;
+                }
+            })
+        }
+        );
         return (
             <React.Fragment>
-                <ReactPlayer className="ReactPlayer" url={this.link} playing />
+                <ReactPlayer className="ReactPlayer" url={this.link} />
                 
                 <ListGroup>
                 {this.props.children.map(child => (
                     
                     <ListGroupItem key={child.key} className="ListItem">           
-                    <a href="#" onClick={(e) => child.props.setActiveChannel(child.props.channel, e)}>
+                    <a href={this.hrefLink} onClick={(e) => child.props.setActiveChannel(child.props.channel, e)}>
                         {child.props.channel.data.name}
                         <div className="unread"> {child.props.channel.type}</div>
                     </a>
@@ -84,14 +83,6 @@ class MainChat extends Component {
                 },
                 user.userToken,
             );
-  
-            const filters = {};
-            const sort = { last_message_at: -1 };
-            const channels = chatClient.queryChannels(filters, sort).then((result) => {
-                console.log(result);
-            });
-            
-   
             return(
                     <div className="ChatContainer">
                         <Chat client={chatClient} theme={'messaging light'}>
@@ -115,4 +106,4 @@ class MainChat extends Component {
 
 
 
-export default withRouter(withFirebase(MainChat));
+export default withFirebase(MainChat);

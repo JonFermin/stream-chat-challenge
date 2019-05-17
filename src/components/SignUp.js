@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../controller/firecontext';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 
 import { signupMongo } from '../controller/mongouser'
